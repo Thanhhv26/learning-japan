@@ -2,6 +2,10 @@ package vn.huvata.xyz.domain;
 
 import javax.persistence.*;
 
+/**
+ * @author van-thanh
+ *
+ */
 @Entity
 @Table(name = "user")
 public class User {

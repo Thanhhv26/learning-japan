@@ -17,11 +17,14 @@ import vn.huvata.xyz.domain.User;
 import vn.huvata.xyz.service.UserService;
 
 //@CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
+/**
+ * @author van-thanh
+ *
+ */
 @RestController
 @RequestMapping({"/api"})
 @CrossOrigin()
-public class UserController {
-
+public class UserController { 
     @Autowired
     private UserService userService;
     
@@ -48,14 +51,14 @@ public class UserController {
     @GetMapping
     public List<User> findAll(){
     	
-    	User user = null;
-    	for(int i = 0; i < 5; i++) {
-    		user = new User();
-    		user.setFirstName("Thành" + i);
-    		user.setLastName("Huỳnh" + i);
-    		user.setEmail("thanhhv26@gmail.com" + i);
-    		userService.create(user);
-    	}
+//    	User user = null;
+//    	for(int i = 0; i < 5; i++) {
+//    		user = new User();
+//    		user.setFirstName("Thành" + i);
+//    		user.setLastName("Huỳnh" + i);
+//    		user.setEmail("thanhhv26@gmail.com" + i);
+//    		userService.create(user);
+//    	}
     	
         return userService.findAll();
     }

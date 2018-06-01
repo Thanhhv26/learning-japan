@@ -9,6 +9,10 @@ import vn.huvata.xyz.domain.User;
 import vn.huvata.xyz.repository.UserRepository;
 import vn.huvata.xyz.service.UserService;
 
+/**
+ * @author van-thanh
+ *
+ */
 @Service
 public class UserServiceImpl implements UserService {
 

@@ -4,6 +4,10 @@ import java.util.List;
 
 import vn.huvata.xyz.domain.User;
 
+/**
+ * @author van-thanh
+ *
+ */
 public interface UserService {
 
     User create(User user);

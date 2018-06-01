@@ -6,6 +6,10 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * @author van-thanh
+ *
+ */
 @ControllerAdvice
 public class ExceptionHandlerController {
 
