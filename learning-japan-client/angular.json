@@ -104,6 +104,11 @@
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
             "devServerTarget": "learning-japan-client:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "learning-japan-client:serve:production"
+            }
           }
         },
         "lint": {
