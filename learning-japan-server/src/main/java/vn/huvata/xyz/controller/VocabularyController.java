@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import vn.huvata.xyz.domain.User;
-import vn.huvata.xyz.service.UserService;
+import vn.huvata.xyz.domain.Vocabulary;
+import vn.huvata.xyz.service.VocabularyService;
 
 //@CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
 /**
@@ -22,34 +22,34 @@ import vn.huvata.xyz.service.UserService;
  *
  */
 @RestController
-@RequestMapping({"/api/user"})
+@RequestMapping({"/api/vocabulary"})
 @CrossOrigin()
-public class UserController {
+public class VocabularyController { 
     @Autowired
-    private UserService userService;
+    private VocabularyService service;
     
     @PostMapping
-    public User create(@RequestBody User user){
-        return userService.create(user);
+    public Vocabulary create(@RequestBody Vocabulary vocabulary){
+        return service.create(vocabulary);
     }
 
     @GetMapping(path = {"/{id}"})
-    public User findOne(@PathVariable("id") int id){
-        return userService.findById(id);
+    public Vocabulary findOne(@PathVariable("id") int id){
+        return service.findById(id);
     }
 
     @PutMapping
-    public User update(@RequestBody User user){
-        return userService.update(user);
+    public Vocabulary update(@RequestBody Vocabulary vocabulary){
+        return service.update(vocabulary);
     }
 
     @DeleteMapping(path ={"/{id}"})
-    public User delete(@PathVariable("id") int id) {
-        return userService.delete(id);
+    public Vocabulary delete(@PathVariable("id") int id) {
+        return service.delete(id);
     }
 
     @GetMapping
-    public List<User> findAll(){    	
-        return userService.findAll();
+    public List<Vocabulary> findAll(){    	
+        return service.findAll();
     }
 }
