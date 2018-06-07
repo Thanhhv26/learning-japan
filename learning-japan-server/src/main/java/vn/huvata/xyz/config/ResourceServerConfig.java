@@ -1,37 +1,37 @@
 package vn.huvata.xyz.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
+import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
+import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
+import org.springframework.security.oauth2.provider.error.OAuth2AccessDeniedHandler;
+
+//Resource in our context is the REST API which we have exposed for the crud operation.To access these resources, 
+//client must be authenticated.In real-time scenarios, whenever an user tries to access these resources, 
+//the user will be asked to provide his authenticity 
+//and once the user is authorized then he will be allowed to access these protected resources.
+//
+//@EnableResourceServer: Enables a resource server
 
 @Configuration
 @EnableResourceServer
 public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 	
-	@Autowired
-	private ResourceServerTokenServices tokenServices;
-
-	@Value("${security.jwt.resource-ids}")
-	private String resourceIds;
-
+private static final String RESOURCE_ID = "resource_id";
+	
 	@Override
-	public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
-		resources.resourceId(resourceIds).tokenServices(tokenServices);
+	public void configure(ResourceServerSecurityConfigurer resources) {
+		resources.resourceId(RESOURCE_ID).stateless(false);
 	}
 
 	@Override
 	public void configure(HttpSecurity http) throws Exception {
-		http.requestMatchers().and().authorizeRequests().antMatchers("/actuator/**", "/api-docs/**").permitAll()
-				.antMatchers("/springjwt/**").authenticated();
+        http.
+                anonymous().disable()
+                .authorizeRequests()
+                .antMatchers("/users/**").authenticated()
+                .and().exceptionHandling().accessDeniedHandler(new OAuth2AccessDeniedHandler());
 	}
 	
 }
-
-//@EnableResourceServer: Enables a resource server. By default this annotation creates a security filter which authenticates requests via an incoming OAuth2 token. The filter is an instance of WebSecurityConfigurerAdapter which has an hard-coded order of 3 (Due to some limitations of Spring Framework). You need to tell Spring Boot to set OAuth2 request filter order to 3 to align with the hardcoded value. You do that by adding security.oauth2.resource.filter-order = 3 in the application.properties file. Hopefully this will be fixed in future releases.
-//
-//The resource server has the authority to define the permission for any endpoint. The the endpoint permission is defined with: 
-//.antMatchers(“/actuator/**”, “/api-docs/**”).permitAll()
-// .antMatchers(“/springjwt/**”).authenticated()
-//
-//Here notice that the resource and the authorization servers both use the same token service. That is because they are in the same code base so we are reusing the same bean.

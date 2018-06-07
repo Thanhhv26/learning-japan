@@ -1,72 +1,63 @@
 package vn.huvata.xyz.config;
 
-import java.util.Arrays;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
+import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
+import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
+import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
+import org.springframework.security.oauth2.provider.token.TokenStore;
+
+//OAuth2 Authorization Server Config
+//This class extends AuthorizationServerConfigurerAdapter and is responsible for generating tokens specific to a 
+//client.Suppose, if a user wants to login to devglan.com via facebook then facebook auth server will be generating 
+//tokens for Devglan.In this case, Devglan becomes the client which will be requesting for authorization code on behalf 
+//of user from facebook - the authorization server.Following is a similar implementation that facebook will be using.
+//Here, we are using in-memory credentials with client_id as devglan-client and CLIENT_SECRET as devglan-secret.
+//But you are free to use JDBC implementation too.
+//@EnableAuthorizationServer: Enables an authorization server.AuthorizationServerEndpointsConfigurer defines the 
+//authorization and token endpoints and the token services.
 
 @Configuration
 @EnableAuthorizationServer
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
 
-	@Value("${security.jwt.client-id}")
-	private String clientId;
-
-	@Value("${security.jwt.client-secret}")
-	private String clientSecret;
-
-	@Value("${security.jwt.grant-type}")
-	private String grantType;
-
-	@Value("${security.jwt.scope-read}")
-	private String scopeRead;
-
-	@Value("${security.jwt.scope-write}")
-	private String scopeWrite = "write";
-
-	@Value("${security.jwt.resource-ids}")
-	private String resourceIds;
-
+	static final String CLIEN_ID = "devglan-client";
+	static final String CLIENT_SECRET = "devglan-secret";
+	static final String GRANT_TYPE = "password";
+	static final String AUTHORIZATION_CODE = "authorization_code";
+	static final String REFRESH_TOKEN = "refresh_token";
+	static final String IMPLICIT = "implicit";
+	static final String SCOPE_READ = "read";
+	static final String SCOPE_WRITE = "write";
+	static final String TRUST = "trust";
+	static final int ACCESS_TOKEN_VALIDITY_SECONDS = 1*60*60;
+    static final int FREFRESH_TOKEN_VALIDITY_SECONDS = 6*60*60;
+	
 	@Autowired
 	private TokenStore tokenStore;
-
-	@Autowired
-	private JwtAccessTokenConverter accessTokenConverter;
 
 	@Autowired
 	private AuthenticationManager authenticationManager;
 
 	@Override
 	public void configure(ClientDetailsServiceConfigurer configurer) throws Exception {
-		configurer.inMemory().withClient(clientId).secret(clientSecret).authorizedGrantTypes(grantType)
-				.scopes(scopeRead, scopeWrite).resourceIds(resourceIds);
+
+		configurer
+				.inMemory()
+				.withClient(CLIEN_ID)
+				.secret(CLIENT_SECRET)
+				.authorizedGrantTypes(GRANT_TYPE, AUTHORIZATION_CODE, REFRESH_TOKEN, IMPLICIT )
+				.scopes(SCOPE_READ, SCOPE_WRITE, TRUST)
+				.accessTokenValiditySeconds(ACCESS_TOKEN_VALIDITY_SECONDS).
+				refreshTokenValiditySeconds(FREFRESH_TOKEN_VALIDITY_SECONDS);
 	}
 
 	@Override
 	public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
-		TokenEnhancerChain enhancerChain = new TokenEnhancerChain();
-		enhancerChain.setTokenEnhancers(Arrays.asList(accessTokenConverter));
-		endpoints.tokenStore(tokenStore).accessTokenConverter(accessTokenConverter).tokenEnhancer(enhancerChain)
+		endpoints.tokenStore(tokenStore)
 				.authenticationManager(authenticationManager);
 	}
 
 }
-
-//· @EnableAuthorizationServer: Enables an authorization server
-//
-//· AuthorizationServerConfig which is our authorization server configuration class extends AuthorizationServerConfigurerAdapter which in turn is an implementation of AuthorizationServerConfigurer. The presence of a bean of type AuthorizationServerConfigurer simply tells Spring Boot to switch off auto-configuration and use the custom configuration. Also the AuthorizationServerConfig like any other configuration class has its definition automatically scanned,wired and applied by Spring Boot because of the @Configuration annotation.
-//
-//· Client id: defines the id of the client application that is authorized to authenticate, the client application provides this in order to be allowed to send request to the server.
-//
-//Client secret: is the client application’s password. In a non-trivial implementation client ids and passwords will be securely stored in a database and retrievable through a separate API that clients applications access during deployment. These pieces of information can also be shared and stored in environment variables although that would not be my preferred option.
-//
-//· Grant type: we define grant type password here because it’s not enabled by default
-//
-//· The scope: read, write defines the level of access we are allowing to resources
-//
-//· Resource Id: The resource Id specified here must be specified on the resource server as well
-//
-//· AuthenticationManager: Spring’s authentication manager takes care checking user credential validity
-//
-//· TokenEnhancerChain: We define a token enhancer that enables chaining multiple types of claims containing different information

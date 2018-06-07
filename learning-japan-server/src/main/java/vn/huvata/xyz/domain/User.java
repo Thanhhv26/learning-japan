@@ -2,6 +2,8 @@ package vn.huvata.xyz.domain;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  * @author van-thanh
  *
@@ -10,46 +12,57 @@ import javax.persistence.*;
 @Table(name = "user")
 public class User {
 
-    @Id
+	@Id
+    @GeneratedValue(strategy= GenerationType.AUTO)
+    private long id;
     @Column
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private String username;
     @Column
-    private String firstName;
+    @JsonIgnore
+    private String password;
     @Column
-    private String lastName;
+    private long salary;
     @Column
-    private String email;
+    private int age;
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getUsername() {
+        return username;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public String getLastName() {
-        return lastName;
+    public String getPassword() {
+        return password;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    public String getEmail() {
-        return email;
+    public long getSalary() {
+        return salary;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setSalary(long salary) {
+        this.salary = salary;
     }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+    
 }

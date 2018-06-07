@@ -23,39 +23,39 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 //Spring Boot can fully auto configure the in-memory H2 datasource once it’s defined on the classpath. 
 //However, to give you a better sense of how you can take control of your application and customize your data source the following configuration is provided:
 
-@Configuration
-@EnableTransactionManagement
-@EnableJpaRepositories(basePackages = "com.nouhoun.springboot.jwt.integration.repository")
+//@Configuration
+//@EnableTransactionManagement
+//@EnableJpaRepositories(basePackages = "com.nouhoun.springboot.jwt.integration.repository")
 public class DatasourceConfig {
 	
-	@Bean
-    public DataSource datasource() throws PropertyVetoException {
-        EmbeddedDatabaseBuilder builder = new EmbeddedDatabaseBuilder();
-        EmbeddedDatabase dataSource = builder
-                .setType(EmbeddedDatabaseType.H2)
-                .addScript("sql-scripts/schema.sql")
-                .addScript("sql-scripts/data.sql")
-                .build();
-
-        return dataSource;
-    }
-
-    @Bean
-    public LocalContainerEntityManagerFactoryBean entityManagerFactory(@Qualifier("datasource") DataSource ds) throws PropertyVetoException{
-        LocalContainerEntityManagerFactoryBean entityManagerFactory = new LocalContainerEntityManagerFactoryBean();
-        entityManagerFactory.setDataSource(ds);
-        entityManagerFactory.setPackagesToScan(new String[]{"com.nouhoun.springboot.jwt.integration.domain"});
-        JpaVendorAdapter jpaVendorAdapter = new HibernateJpaVendorAdapter();
-        entityManagerFactory.setJpaVendorAdapter(jpaVendorAdapter);
-        return entityManagerFactory;
-    }
-
-    @Bean
-    public PlatformTransactionManager transactionManager(EntityManagerFactory entityManagerFactory){
-        JpaTransactionManager transactionManager = new JpaTransactionManager();
-        transactionManager.setEntityManagerFactory(entityManagerFactory);
-        return transactionManager;
-    }
+//	@Bean
+//    public DataSource datasource() throws PropertyVetoException {
+//        EmbeddedDatabaseBuilder builder = new EmbeddedDatabaseBuilder();
+//        EmbeddedDatabase dataSource = builder
+//                .setType(EmbeddedDatabaseType.H2)
+//                .addScript("sql-scripts/schema.sql")
+//                .addScript("sql-scripts/data.sql")
+//                .build();
+//
+//        return dataSource;
+//    }
+//
+//    @Bean
+//    public LocalContainerEntityManagerFactoryBean entityManagerFactory(@Qualifier("datasource") DataSource ds) throws PropertyVetoException{
+//        LocalContainerEntityManagerFactoryBean entityManagerFactory = new LocalContainerEntityManagerFactoryBean();
+//        entityManagerFactory.setDataSource(ds);
+//        entityManagerFactory.setPackagesToScan(new String[]{"com.nouhoun.springboot.jwt.integration.domain"});
+//        JpaVendorAdapter jpaVendorAdapter = new HibernateJpaVendorAdapter();
+//        entityManagerFactory.setJpaVendorAdapter(jpaVendorAdapter);
+//        return entityManagerFactory;
+//    }
+//
+//    @Bean
+//    public PlatformTransactionManager transactionManager(EntityManagerFactory entityManagerFactory){
+//        JpaTransactionManager transactionManager = new JpaTransactionManager();
+//        transactionManager.setEntityManagerFactory(entityManagerFactory);
+//        return transactionManager;
+//    }
 
 }
 

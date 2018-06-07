@@ -1,2 +1,0 @@
-# learning-japan
-learning-japan

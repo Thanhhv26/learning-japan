@@ -15,7 +15,7 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>2.0.2.RELEASE</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 
 	<properties>
@@ -25,27 +25,45 @@
 	</properties>
 
 	<dependencies>
-	
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-security</artifactId>			
+			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
-		
-		<!-- JPA Data (We are going to use Repositories, Entities, Hibernate, etc...) -->        
-        <dependency>
+
+		<!-- JPA Data (We are going to use Repositories, Entities, Hibernate, etc...) -->
+		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
-        
-        <!-- Use MySQL Connector-J -->        
-        <dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-jwt -->
+		<!-- <dependency> <groupId>org.springframework.security</groupId> <artifactId>spring-security-jwt</artifactId> 
+			<version>1.0.9.RELEASE</version> </dependency> -->
+
+		<!-- https://mvnrepository.com/artifact/org.springframework.security.oauth/spring-security-oauth2 -->
+		<dependency>
+			<groupId>org.springframework.security.oauth</groupId>
+			<artifactId>spring-security-oauth2</artifactId>
+			<version>2.3.3.RELEASE</version>
+		</dependency>
+
+		<!-- Use MySQL Connector-J -->
+		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/commons-dbcp/commons-dbcp -->
+		<dependency>
+			<groupId>commons-dbcp</groupId>
+			<artifactId>commons-dbcp</artifactId>
+			<version>1.4</version>
 		</dependency>
 
 		<dependency>
@@ -53,7 +71,7 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		
+
 	</dependencies>
 
 	<build>

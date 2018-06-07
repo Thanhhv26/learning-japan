@@ -19,4 +19,6 @@ public interface UserRepository extends CrudRepository<User, Integer> {
 //    User findOne(int id);
 
     User save(User user);
+    
+    User findByUsername(String username);
 }

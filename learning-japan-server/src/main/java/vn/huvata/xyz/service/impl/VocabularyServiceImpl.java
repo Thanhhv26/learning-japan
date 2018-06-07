@@ -21,7 +21,7 @@ public class VocabularyServiceImpl implements VocabularyService {
 
     @Override
     public Vocabulary create(Vocabulary vocabulary) {
-        return repository.save(Vocabulary);
+        return repository.save(vocabulary);
     }
 
     @Override
