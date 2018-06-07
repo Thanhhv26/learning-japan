@@ -29,7 +29,7 @@ public class UserServiceImpl implements UserService {
         User user = findById(id);
         if(user != null){
             repository.delete(user);
-        }
+        } 
         return user;
     }
 
