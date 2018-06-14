@@ -1,35 +1,53 @@
 package vn.huvata.xyz.domain;
 
-import javax.persistence.*;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.validator.constraints.NotEmpty;
+
+import javax.persistence.*;
+import java.util.List;
 
 /**
  * @author van-thanh
  *
  */
 @Entity
-@Table(name = "user")
+@Table(name = "app_user")
 public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long id;
 
-	@Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
-    private long id;
-    @Column
+    @Column(name = "username")
     private String username;
-    @Column
+
+    @Column(name = "password")
     @JsonIgnore
     private String password;
-    @Column
-    private long salary;
-    @Column
-    private int age;
 
-    public long getId() {
+    @Column(name = "first_name")
+    private String firstName;
+
+    @Column(name = "last_name")
+    private String lastName;
+
+    /**
+     * Roles are being eagerly loaded here because
+     * they are a fairly small collection of items for this example.
+     */
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "user_role", joinColumns
+            = @JoinColumn(name = "user_id",
+            referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id",
+                    referencedColumnName = "id"))
+    private List<Role> roles;
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -49,20 +67,28 @@ public class User {
         this.password = password;
     }
 
-    public long getSalary() {
-        return salary;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setSalary(long salary) {
-        this.salary = salary;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public int getAge() {
-        return age;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setAge(int age) {
-        this.age = age;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
-    
+
+    public List<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
+    }
 }
+
