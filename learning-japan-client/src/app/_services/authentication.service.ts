@@ -18,12 +18,14 @@ export class AuthenticationService {
         const body = `username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}&grant_type=password`;
 
         const headers = new HttpHeaders();
-        headers.append('Content-Type', 'application/x-www-form-urlencoded');
+//        headers.append('Content-Type', 'application/x-www-form-urlencoded');
+        headers.append('Content-Type', 'application/form-data');
         headers.append('Authorization', 'Basic ' + btoa(TOKEN_AUTH_USERNAME + ':' + TOKEN_AUTH_PASSWORD));
         console.log(btoa(TOKEN_AUTH_USERNAME + ':' + TOKEN_AUTH_PASSWORD));
 
         return this.http.post(AuthenticationService.AUTH_TOKEN, body, {headers})
           .pipe(map((res:any) => {
+              console.log(res.access_token);
             // login successful if there's a jwt token in the response
             if (res && res.access_token) {
                 // store username and jwt token in local storage to keep user logged in between page refreshes

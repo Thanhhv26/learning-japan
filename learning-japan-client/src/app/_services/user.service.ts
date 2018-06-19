@@ -39,7 +39,7 @@ export class UserService {
     }
 
     getAll() {
-        return this.http.get<User[]>('/api/users');
+        return this.http.get<User[]>('/api/cities');
     }
     
 }
